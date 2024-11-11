@@ -7,7 +7,7 @@ library(readr)# 用于读取 CSV 文件
 library(readxl)
 library(dplyr)
 #read data
-Global_gender_inequality<- read_excel(here::here("hdr-data.xlsx"))
+Global_gender_inequality<- read_csv(here::here("hdr-data-2.csv"))
 Spatial_data_world<- st_read("World_Countries_(Generalized)_9029012925078512962.geojson")
 
 #检查数据类型
@@ -30,3 +30,10 @@ mergedgii_data <- Spatial_data_world %>%
 # 计算不平等指数的差异并创建新列
   gii_data <- gii_data %>%
     mutate(inequality_diff = `2010` - `2019`)
+  
+  #画图
+  ggplot(gii_data) +
+    geom_sf(aes(fill = inequality_diff)) +
+    scale_fill_viridis_c(name = "GII Difference", option = "C") +
+    labs(title = "Global Gender Inequality Index Difference ") +
+    theme_minimal()
